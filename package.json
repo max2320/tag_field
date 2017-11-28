@@ -1,0 +1,20 @@
+{
+  "name": "tag_field",
+  "version": "1.0.0",
+  "description": "Zero dependency tag_field",
+  "scripts": {
+    "build": "babel -o tag_field.js tag_field.src.js"
+  },
+  "keywords": [
+    "tag",
+    "tagField",
+    "tag",
+    "field"
+  ],
+  "author": "Anderson Rocha",
+  "license": "MIT",
+  "devDependencies": {
+    "babel": "^6.23.0",
+    "babel-preset-env": "^1.6.1"
+  }
+}
