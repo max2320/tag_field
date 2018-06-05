@@ -31,7 +31,17 @@ var TagField = function () {
     value: function mount() {
       this.hideField();
       this.render();
+      this.renderTags();
       this.bindEvents();
+    }
+  }, {
+    key: 'renderTags',
+    value: function renderTags() {
+      var _this = this;
+
+      this.targetField.value.split(',').forEach(function (tag) {
+        _this.renderTag(tag);
+      });
     }
   }, {
     key: 'hideField',
@@ -63,8 +73,6 @@ var TagField = function () {
       this.tagButton.setAttribute('type', 'button');
       this.tagButton.innerHTML = this.options.buttonText;
 
-      this.tagButton;
-
       this.container.appendChild(this.tagButton);
     }
   }, {
@@ -85,7 +93,7 @@ var TagField = function () {
   }, {
     key: 'renderTag',
     value: function renderTag(content) {
-      var _this = this;
+      var _this2 = this;
 
       var tag = document.createElement('span');
       tag.classList.add('tagfield__tag');
@@ -97,7 +105,7 @@ var TagField = function () {
       tagRemove.innerHTML = this.options.removeIcon;
       tag.appendChild(tagRemove);
       tagRemove.addEventListener('click', function (event) {
-        _this.removeTag(event, tag);
+        _this2.removeTag(event, tag);
       });
 
       this.container.insertBefore(tag, this.tagAnchor);
@@ -105,11 +113,11 @@ var TagField = function () {
   }, {
     key: 'refreshTags',
     value: function refreshTags() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.tags = [];
       [].forEach.call(this.container.querySelectorAll('[tag-content]'), function (tag) {
-        _this2.tags.push(tag.attributes['tag-content'].value);
+        _this3.tags.push(tag.attributes['tag-content'].value);
       });
 
       this.targetField.value = this.tags.join(',');
@@ -153,12 +161,12 @@ var TagField = function () {
   }, {
     key: 'bindEvents',
     value: function bindEvents() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.textField.addEventListener('keypress', function (event) {
         if (event.which == '13') {
           event.preventDefault();
-          _this3.onAddTag(event);
+          _this4.onAddTag(event);
         }
       });
 
@@ -166,7 +174,7 @@ var TagField = function () {
         this.tagButton.addEventListener('click', function (event) {
           event.preventDefault();
 
-          _this3.onAddTag(event);
+          _this4.onAddTag(event);
         });
       }
     }

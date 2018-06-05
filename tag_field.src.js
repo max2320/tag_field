@@ -18,11 +18,17 @@ class TagField{
     this.mount();
   }
 
-
   mount(){
     this.hideField();
     this.render();
+    this.renderTags();
     this.bindEvents();
+  }
+
+  renderTags(){
+    this.targetField.value.split(',').forEach((tag)=>{
+      this.renderTag(tag);
+    });
   }
 
   hideField(){
@@ -49,8 +55,6 @@ class TagField{
     this.tagButton.classList.add('tagfield__button');
     this.tagButton.setAttribute('type','button');
     this.tagButton.innerHTML = this.options.buttonText;
-
-    this.tagButton
 
     this.container.appendChild(this.tagButton);
   }
