@@ -39,9 +39,11 @@ var TagField = function () {
     value: function renderTags() {
       var _this = this;
 
-      this.targetField.value.split(',').forEach(function (tag) {
-        _this.renderTag(tag);
-      });
+      if (this.targetField.value !== "") {
+        this.targetField.value.split(',').forEach(function (tag) {
+          _this.renderTag(tag);
+        });
+      }
     }
   }, {
     key: 'hideField',

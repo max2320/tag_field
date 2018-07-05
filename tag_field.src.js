@@ -26,9 +26,11 @@ class TagField{
   }
 
   renderTags(){
-    this.targetField.value.split(',').forEach((tag)=>{
-      this.renderTag(tag);
-    });
+    if(this.targetField.value !== ""){
+      this.targetField.value.split(',').forEach((tag)=>{
+        this.renderTag(tag);
+      });
+    }
   }
 
   hideField(){
