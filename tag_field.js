@@ -1,19 +1,22 @@
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var TagField = function () {
   function TagField(targetField) {
+    var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     _classCallCheck(this, TagField);
 
-    if (typeof targetField == 'string') {
-      targetField = document.querySelector(targetField);
-    }
-
-    this.targetField = targetField;
-
+    this.textField = document.createElement('input');
+    this.tagButton = document.createElement('button');
+    this.container = document.createElement('div');
+    this.tags = [];
+    this.isRequired = false;
     this.options = {
       removeIcon: 'x',
       allowDuplicate: false,
@@ -21,7 +24,15 @@ var TagField = function () {
       buttonText: 'Adicionar'
     };
 
-    this.tags = [];
+    if (typeof targetField == 'string') {
+      targetField = document.querySelector(targetField);
+    }
+
+    this.targetField = targetField;
+
+    this.options = _extends({}, this.options, options);
+
+    this.isRequired = this.targetField.required;
 
     this.mount();
   }
@@ -43,6 +54,8 @@ var TagField = function () {
         this.targetField.value.split(',').forEach(function (tag) {
           _this.renderTag(tag);
         });
+
+        this.refreshTags();
       }
     }
   }, {
@@ -53,9 +66,8 @@ var TagField = function () {
   }, {
     key: 'renderField',
     value: function renderField() {
-      this.textField = document.createElement('input');
       this.textField.setAttribute('type', 'text');
-      this.textField.required = this.targetField.required;
+      this.textField.required = this.isRequired;
 
       this.container.appendChild(this.textField);
     }
@@ -70,7 +82,7 @@ var TagField = function () {
   }, {
     key: 'renderButton',
     value: function renderButton() {
-      this.tagButton = document.createElement('button');
+
       this.tagButton.classList.add('tagfield__button');
       this.tagButton.setAttribute('type', 'button');
       this.tagButton.innerHTML = this.options.buttonText;
@@ -80,7 +92,6 @@ var TagField = function () {
   }, {
     key: 'render',
     value: function render() {
-      this.container = document.createElement('div');
       this.container.classList.add('tagfield__container');
 
       this.renderAnchor();
@@ -124,7 +135,7 @@ var TagField = function () {
 
       this.targetField.value = this.tags.join(',');
 
-      if (this.targetField.required) {
+      if (this.isRequired) {
         this.textField.required = this.tags.length == 0;
       }
     }
