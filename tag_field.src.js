@@ -1,5 +1,20 @@
 class TagField{
-  constructor(targetField){
+  textField = document.createElement('input');
+  tagButton = document.createElement('button');
+  container = document.createElement('div');
+
+  tags = []
+
+  isRequired = false;
+
+  options = {
+    removeIcon: 'x',
+    allowDuplicate: false,
+    showButton: true,
+    buttonText: 'Adicionar'
+  };
+
+  constructor(targetField, options = {}){
     if(typeof targetField == 'string'){
       targetField = document.querySelector(targetField);
     }
@@ -7,13 +22,11 @@ class TagField{
     this.targetField = targetField;
 
     this.options = {
-      removeIcon: 'x',
-      allowDuplicate: false,
-      showButton: true,
-      buttonText: 'Adicionar'
+      ...this.options,
+      ...options
     };
 
-    this.tags = [];
+    this.isRequired = this.targetField.required;
 
     this.mount();
   }
@@ -30,6 +43,8 @@ class TagField{
       this.targetField.value.split(',').forEach((tag)=>{
         this.renderTag(tag);
       });
+      
+      this.refreshTags();
     }
   }
 
@@ -38,9 +53,8 @@ class TagField{
   }
 
   renderField(){
-    this.textField = document.createElement('input');
     this.textField.setAttribute('type', 'text');
-    this.textField.required = this.targetField.required;
+    this.textField.required = this.isRequired;
 
     this.container.appendChild(this.textField);
   }
@@ -53,7 +67,7 @@ class TagField{
   }
 
   renderButton(){
-    this.tagButton = document.createElement('button');
+
     this.tagButton.classList.add('tagfield__button');
     this.tagButton.setAttribute('type','button');
     this.tagButton.innerHTML = this.options.buttonText;
@@ -62,7 +76,6 @@ class TagField{
   }
 
   render(){
-    this.container = document.createElement('div');
     this.container.classList.add('tagfield__container');
 
     this.renderAnchor();
@@ -100,7 +113,7 @@ class TagField{
 
     this.targetField.value = this.tags.join(',');
 
-    if(this.targetField.required){
+    if(this.isRequired){
       this.textField.required = this.tags.length == 0;
     }
   }
